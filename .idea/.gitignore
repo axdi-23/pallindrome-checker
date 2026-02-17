@@ -1,0 +1,40 @@
+# Eclipse (if anyone imports there)
+.classpath
+.project
+.settings/
+
+# NetBeans (optional)
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code (optional for teammates)
+.vscode/
+
+# Compiled class files
+*.class
+
+# Logs
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/
+
+# Environment files
+.env
