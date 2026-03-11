@@ -6,96 +6,49 @@ import java.util.Scanner;
  */
 public class PallindromeCheckerApp {
 
-    // Internal Node class must be static to be used by static methods
-    static class Node {
-        char data;
-        Node next;
-
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("==============================================");
-        System.out.println("   UC8: Linked List Palindrome Checker      ");
+        System.out.println("      UC9: Recursive Palindrome Checker       ");
         System.out.println("==============================================");
 
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        // Step 1: Clean input and build the Singly Linked List
+        // Sanitize: remove non-alphanumeric and convert to lowercase
         String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
         if (cleanInput.isEmpty()) {
-            System.out.println("Input is empty or contains no valid characters.");
-            return;
-        }
-
-        Node head = buildLinkedList(cleanInput);
-
-        // Step 2: Check if palindrome using optimized pointer logic
-        if (isPalindrome(head)) {
-            System.out.println("\nResult: \"" + input + "\" is a palindrome.");
+            System.out.println("Result: The input is empty.");
+        } else if (isPalindromeRecursive(cleanInput, 0, cleanInput.length() - 1)) {
+            System.out.println("Result: \"" + input + "\" is a palindrome.");
         } else {
-            System.out.println("\nResult: \"" + input + "\" is NOT a palindrome.");
+            System.out.println("Result: \"" + input + "\" is NOT a palindrome.");
         }
 
         scanner.close();
     }
 
-    private static Node buildLinkedList(String s) {
-        Node head = new Node(s.charAt(0));
-        Node current = head;
-        for (int i = 1; i < s.length(); i++) {
-            current.next = new Node(s.charAt(i));
-            current = current.next;
-        }
-        return head;
-    }
-
-    public static boolean isPalindrome(Node head) {
-        if (head == null || head.next == null) return true;
-
-        // 1. Find middle using Fast & Slow pointers
-        // Fast moves 2x, Slow moves 1x. When Fast hits the end, Slow is at middle.
-
-        Node slow = head;
-        Node fast = head;
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+    /**
+     * Recursive function to check palindrome.
+     * @param str The cleaned string.
+     * @param start The current left-side index.
+     * @param end The current right-side index.
+     * @return true if palindrome, false otherwise.
+     */
+    public static boolean isPalindromeRecursive(String str, int start, int end) {
+        // Base Condition 1: If pointers meet or cross, we've checked everything.
+        if (start >= end) {
+            return true;
         }
 
-        // 2. Reverse the second half of the list in-place
-
-        Node secondHalf = reverseList(slow);
-        Node firstHalf = head;
-
-        // 3. Compare the two halves
-        Node temp = secondHalf;
-        while (temp != null) {
-            if (firstHalf.data != temp.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            temp = temp.next;
+        // Base Condition 2: If characters at start and end don't match.
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
         }
-        return true;
-    }
 
-    private static Node reverseList(Node head) {
-        Node prev = null;
-        Node current = head;
-        while (current != null) {
-            Node nextNode = current.next;
-            current.next = prev;
-            prev = current;
-            current = nextNode;
-        }
-        return prev;
+        // Recursive Step: Move pointers inward and call again.
+        return isPalindromeRecursive(str, start + 1, end - 1);
     }
 }
