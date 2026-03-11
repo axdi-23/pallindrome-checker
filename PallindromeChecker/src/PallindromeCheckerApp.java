@@ -1,50 +1,42 @@
-package PACKAGE_NAME;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Scanner;
-import java.util.Stack;
 
 public class PallindromeCheckerApp {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("   UC6: Queue + Stack Palindrome Checker   ");
+        System.out.println("==============================================");
+        System.out.println("   UC7: Deque-Based Palindrome Checker      ");
+        System.out.println("==============================================");
 
-        System.out.print("Enter a string to check: ");
+        System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        if (checkPalindrome(input)) {
-            System.out.println("\nResult: \"" + input + "\" is a Palindrome!");
+        if (isPalindrome(input)) {
+            System.out.println("Result: \"" + input + "\" is a palindrome.");
         } else {
-            System.out.println("\nResult: \"" + input + "\" is NOT a Palindrome.");
+            System.out.println("Result: \"" + input + "\" is NOT a palindrome.");
         }
 
         scanner.close();
     }
 
-    /**
-     * Core logic using Stack and Queue to validate palindrome status.
-     */
-    public static boolean checkPalindrome(String input) {
-        // Normalize input: remove spaces/punctuation and convert to lowercase
+    public static boolean isPalindrome(String input) {
         String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        // Initialize Data Structures
-        Queue<Character> queue = new LinkedList<>(); // FIFO
-        Stack<Character> stack = new Stack<>();      // LIFO
+        Deque<Character> deque = new ArrayDeque<>();
 
-        for (int i = 0; i < cleanInput.length(); i++) {
-            char c = cleanInput.charAt(i);
-            queue.add(c);
-            stack.push(c);
+        for (char ch : cleanInput.toCharArray()) {
+            deque.addLast(ch);
         }
 
-        while (!queue.isEmpty()) {
-            char fromQueue = queue.remove();
-            char fromStack = stack.pop();
+        while (deque.size() > 1) {
+            char first = deque.removeFirst();
+            char last = deque.removeLast();
 
-            if (fromQueue != fromStack) {
+            if (first != last) {
                 return false;
             }
         }
